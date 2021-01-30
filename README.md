@@ -158,3 +158,69 @@ Mvvm architecture pattern using coroutine
  ViewModelScope. So, That’s all for this lesson. We will definitely go to more practical code project examples
  during later sections of this course. During the next lesson of this section, we are going to study about
  lifecyclescope. Another poperty provided by our new KTX library. So thank you very much for lisntening .
+
+
+##LiveDataBuilder
+
+-Now, during this lesson we are going to disucss about newly introduced LiveData Builder.
+ To use this we need to add livedata-ktx library 2.2.0-alpha01 or higher version to our project.
+
+-To show you the benefits of this new feature, I am going to use the project we created during the first
+ lesson of this section.
+
+-Here we have added lifecycle and coroutine dependencies.
+ We created a data class and named it as User.
+
+-This user class has two properties. Int id and String name.
+
+-Then we created a repository class named UserRepository.
+
+-This UserRepository has a suspending function named getUsers, which returns a list of user instances.
+
+-Here we have used this delay function to simulate a long running task. Then we created a ViewModel
+ class, named it as MainActivityViewModel. here we have created this getUsers function. In that we have
+ a viewModelScope to launch a new coroutine,
+
+-we studied about viewModelScopes during the first lesson of this section, Then here
+ we have defined a list . Then we have used withContext function to switch the thread of the coroutine
+ to a background thread.
+
+-And here, we have invoked the getUsers() function of the repository and get the list of User objects.
+ And finally assigned that to the value of mutable live data.
+
+-You can see, we need to invoke this getUsers function, before observing the values of this mutable livedata.
+
+-In the main activity we wrote codes to invoke getUsers() function, and to Observe the list of users .
+ If we run this app we will be able to see the log results. Let’s run the app ,log results will appear after 8 seconds
+ delay.
+
+-Yes, it worked as we expected.Alright. Now ,let me show you how to do this in a much easier
+ and in a much efficient way .
+
+-we need to add livedata ktx library to the gradle. Version should be 2.2.0-alpha01 or higher
+ With the 2.2.0-alpha01 version, Android architecture components team introduced a new coroutine building
+ block for livedata , This new block will automatically execute when the LiveData becomes active. 
+
+-It automatically decides when to stop executing and cancel the coroutines inside the building block considering the state
+ of the lifecycle owner. Inside the LiveData building block, you can use emit() function to set a value to the
+ LiveData.
+
+-Now, I am going back to MainActivityViewModel class. Let me show you how to do this using new livedata builder.
+ I am commenting these first. var users equals liveData
+
+-we need our long running task to be executed in a background thread. So I am adding Dispatchers.IO
+ as the context.
+
+-Now we need to get the user data from the repository.
+
+-val result = usersRepository.getUsers()
+
+-now we can emit the result .
+
+-See, how many less code lines, we have now. Let’s move to MainActivity .
+
+-We don’t need to invoke a function like this now. Let’s comment it.
+
+-So let’s run the app very quickly again and see it in action
+
+-So, here we go App is working as it was worked before, but this time with very less amout of code.

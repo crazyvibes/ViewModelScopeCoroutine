@@ -3,6 +3,7 @@ package `in`.bk.viewmodelscopecoroutine
 import `in`.bk.viewmodelscopecoroutine.model.User
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
@@ -23,18 +24,26 @@ class MainActivityViewModel:ViewModel() {
 
 
     private val userRepository=UserRepository()
-    var users:MutableLiveData<List<User>> = MutableLiveData()
-    fun getUserData(){
-        viewModelScope.launch {
-            var result:List<User>?=null
-            withContext(Dispatchers.IO){
-                result=userRepository.getUser()
-            }
-            users.value=result
-        }
 
+
+    //ViewModelScope
+//    var users:MutableLiveData<List<User>> = MutableLiveData()
+//    fun getUserData(){
+//        viewModelScope.launch {
+//            var result:List<User>?=null
+//            withContext(Dispatchers.IO){
+//                result=userRepository.getUser()
+//            }
+//            users.value=result
+//        }
+//
+//    }
+
+    //liveDataBuilder
+    var users = liveData(Dispatchers.IO) {
+        val result =userRepository.getUser()
+        emit(result)
     }
-
 
 }
 

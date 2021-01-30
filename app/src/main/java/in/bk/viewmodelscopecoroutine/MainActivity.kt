@@ -16,7 +16,16 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel=ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        mainActivityViewModel.getUserData()
+        //For ViewModelScope
+//        mainActivityViewModel.getUserData()
+//        mainActivityViewModel.users.observe(this, Observer { myUsers ->
+//            myUsers.forEach {
+//                Log.i("TAG", "Name is ${it.name}")
+//            }
+//
+//        })
+
+        //FOr liveDataBuilder
         mainActivityViewModel.users.observe(this, Observer { myUsers ->
             myUsers.forEach {
                 Log.i("TAG", "Name is ${it.name}")
